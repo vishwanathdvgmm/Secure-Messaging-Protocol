@@ -1,10 +1,10 @@
-# <font color="cyan"> Secure Messaging Protocol (SMP) </font>
+# Secure Messaging Protocol (SMP)
 
 **A next-generation email architecture designed to replace SMTP with a secure, identity-based, and spam-resistant communication system.**
 
 ---
 
-## <font color="red"> 1. Core Structural Problems: </font>
+## 1. Core Structural Problems:
 
 Traditional email system (SMTP-based) suffer from fundamental architecture weaknesses:
 
@@ -35,7 +35,7 @@ Traditional email system (SMTP-based) suffer from fundamental architecture weakn
 
 ---
 
-## <font color="orange"> 2. Proposed Solutions: </font>
+## 2. Proposed Solutions:
 
 SMP introduces the following core improvements:
 
@@ -48,7 +48,7 @@ SMP introduces the following core improvements:
 
 ---
 
-## <font color="green"> 3. Core Design Principles: </font>
+## 3. Core Design Principles:
 
 The protocol is built on the following principles:
 
@@ -72,7 +72,7 @@ The protocol is built on the following principles:
 
 ---
 
-## <font color="grey"> 4. High-Level Architecture: </font>
+## 4. High-Level Architecture:
 
 SMP is structured into the following layers:
 
@@ -93,7 +93,7 @@ SMP is structured into the following layers:
 
 ---
 
-## <font color="blue"> 5. Communication Model: </font>
+## 5. Communication Model:
 
 SMP operates in two modes:
 
@@ -107,7 +107,7 @@ Session mode is an extension of the asynchronous protocol, not a replacement.
 
 ---
 
-## <font color="purple"> 6. Key Innovations: </font>
+## 6. Key Innovations:
 
 - **Cryptographic inbox control**  
   Messages are accepted based on verifiable identity and policy
@@ -126,7 +126,7 @@ Session mode is an extension of the asynchronous protocol, not a replacement.
 
 ---
 
-## <font color="cyan"> 6. Project Scope: </font>
+## 6. Project Scope:
 
 This project focuses on:
 
@@ -141,13 +141,13 @@ Not included in the intial phase:
 
 ---
 
-## <font color="magenta"> 7. Documentation Map: </font>
+## 7. Documentation Map:
 
-- <font color="cyan">Core/</font><br>
+- Core/<br>
   Foundational models, threat model, and cryptographic design.
-- <font color="cyan">Data_Paths/</font><br>
+- Data_Paths/<br>
   Protocol flows, handshake mechanisms, and packet formats.
-- <font color="cyan">Operational_Infrastructure/</font><br>
+- Operational_Infrastructure/<br>
   Relay architecture, storage systems, and identity registry.
 
 ---

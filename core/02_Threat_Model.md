@@ -1,4 +1,4 @@
-# <font color="red"> Threat Model </font>
+# Threat Model
 
 This document defines the adversarial environment in which SMP operates and the security guarantees the protocol is designed to provide.
 
@@ -6,7 +6,7 @@ The threat model directly informs all architectural and cryptographic decisions.
 
 ---
 
-## 1. <font color="cyan"> System Assumptions </font>
+## 1. System Assumptions
 
 ### 1.1 Relay Trust Model
 
@@ -56,7 +56,7 @@ The network is considered **fully observable**.
 
 ---
 
-## 2. <font color="magenta"> Metadata Protection Scope </font>
+## 2. Metadata Protection Scope
 
 Full metadata anonymity (e.g., Tor-level) is **out of scope for initial design**.
 
@@ -77,7 +77,7 @@ Full metadata privacy introduces significant complexity and latency. SMP adopts 
 
 ---
 
-## 3. <font color="green"> Federation and Domain Isolation </font>
+## 3. Federation and Domain Isolation
 
 SMP supports a federated deployment model.
 
@@ -98,7 +98,7 @@ A compromise in one domain must not affect the security of another domain.
 
 ---
 
-## 4. <font color="yellow"> Adversary Classes </font>
+## 4. Adversary Classes
 
 ### 4.1 Low-Skill Attackers
 
@@ -175,7 +175,7 @@ Limitations:
 
 ---
 
-## 5. <font color="grey"> Cryptographic Security Goals </font>
+## 5. Cryptographic Security Goals
 
 Based on the above threat model, SMP must guarantee:
 
@@ -218,7 +218,7 @@ Based on the above threat model, SMP must guarantee:
 
 ---
 
-## 6. <font color="red"> Post-Quantum Considerations </font>
+## 6. Post-Quantum Considerations
 
 SMP adopts a **hybrid cryptographic strategy**.
 
@@ -232,7 +232,7 @@ SMP adopts a **hybrid cryptographic strategy**.
 
 ---
 
-## 7. <font color="cyan"> Out-of-Scope Threats </font>
+## 7. Out-of-Scope Threats
 
 The following are explicitly not addressed in the initial version:
 
@@ -243,7 +243,7 @@ The following are explicitly not addressed in the initial version:
 
 ---
 
-## 8. <font color="blue"> Summary </font>
+## 8. Summary
 
 SMP assumes an adversarial environment where:
 
@@ -253,3 +253,5 @@ SMP assumes an adversarial environment where:
 - Attackers range from low-skill to state-level
 
 The protocol is designed to provide strong cryptographic guarantees under these conditions, while maintaining practical deployability.
+
+---

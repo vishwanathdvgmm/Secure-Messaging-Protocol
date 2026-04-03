@@ -1,4 +1,4 @@
-# <font color="red"> Problem Statement </font>
+# Problem Statement
 
 Traditional email systems based on SMTP are fundamentally misaligned with modern security and privacy requirements. These limitations are not incidental—they are structural and cannot be fully resolved through incremental improvements.
 
@@ -6,7 +6,7 @@ This section defines the core architectural deficiencies that necessitate a new 
 
 ---
 
-## 1. <font color="cyan"> Lack of End-to-End Encryption </font>
+## 1. Lack of End-to-End Encryption
 
 SMTP does not provide native end-to-end encryption.
 
@@ -19,7 +19,7 @@ Confidentiality depends on server trust, which violates zero-trust security prin
 
 ---
 
-## 2. <font color="magenta"> Absence of Cryptographic Identity </font>
+## 2. Absence of Cryptographic Identity
 
 Email addresses are not cryptographic identities.
 
@@ -32,7 +32,7 @@ Authenticity is probabilistic, not cryptographically guaranteed.
 
 ---
 
-## 3. <font color="green"> Open Sender Model (Spam by Design) </font>
+## 3. Open Sender Model (Spam by Design)
 
 SMTP allows unrestricted sender-to-recipient communication.
 
@@ -45,7 +45,7 @@ Spam is an emergent property of the protocol, not an anomaly.
 
 ---
 
-## 4. <font color="blue"> Metadata Exposure </font>
+## 4. Metadata Exposure
 
 Email systems expose critical metadata in plaintext.
 
@@ -58,7 +58,7 @@ Even when content is encrypted (e.g., PGP), communication patterns remain observ
 
 ---
 
-## 5. <font color="yellow"> No Forward Secrecy </font>
+## 5. No Forward Secrecy
 
 SMTP-based systems do not enforce forward secrecy.
 
@@ -70,7 +70,7 @@ A single key compromise can expose entire communication history.
 
 ---
 
-## 6. <font color="grey"> Lack of Cryptographic Inbox Control </font>
+## 6. Lack of Cryptographic Inbox Control
 
 Recipients cannot enforce sender authenticity at the protocol level.
 
@@ -83,7 +83,7 @@ Recipients are passive; control is delegated to heuristics and server logic.
 
 ---
 
-## 7. <font color="red"> Legacy Compatibility Constraints </font>
+## 7. Legacy Compatibility Constraints
 
 SMTP must maintain backward compatibility with decades-old infrastructure.
 
@@ -96,7 +96,7 @@ The protocol cannot evolve into a secure system without breaking compatibility.
 
 ---
 
-## 8. <font color="cyan"> Summary </font>
+## 8. Summary
 
 These limitations demonstrate that SMTP is not a secure messaging protocol but a best-effort delivery system with optional security layers.
 
@@ -110,3 +110,5 @@ A modern communication system requires:
 - Recipient-controlled message acceptance
 
 SMP is designed to address these requirements at the protocol level, rather than as optional extensions.
+
+---
