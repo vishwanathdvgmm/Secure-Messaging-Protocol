@@ -149,5 +149,11 @@ Not included in the intial phase:
   Protocol flows, handshake mechanisms, and packet formats.
 - Operational_Infrastructure/<br>
   Relay architecture, storage systems, and identity registry.
+- Api-Spec/<br>
+  REST API specification.
+- Client_Architecture/<br>
+  Client architecture.
+- Reference_Implementation/<br>
+  Reference implementation.
 
 ---
