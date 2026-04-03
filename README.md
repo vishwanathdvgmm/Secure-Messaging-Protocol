@@ -155,5 +155,7 @@ Not included in the intial phase:
   Client architecture.
 - Reference_Implementation/<br>
   Reference implementation.
+- TUI/<br>
+  Terminal User Interface.
 
 ---
