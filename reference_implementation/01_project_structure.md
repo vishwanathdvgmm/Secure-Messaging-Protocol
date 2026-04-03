@@ -37,6 +37,11 @@ Entry points for binaries.
 ```text
 cmd/
 ├── client/
+    ├── main.go
+    ├── tui/
+        ├── screens/
+        ├── controller/
+        ├── components/
 ├── relay/
 ├── registry/
 ```
