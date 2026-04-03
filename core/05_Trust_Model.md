@@ -60,7 +60,7 @@ LocalTrustRecord {
 
 Final trust score:
 
-```plaintext
+```text
 FinalTrustScore =
     (0.6 * GlobalTrust)
   + (0.4 * LocalTrust)

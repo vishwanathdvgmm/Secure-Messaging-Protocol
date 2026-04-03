@@ -54,7 +54,6 @@ pub struct DoubleRatchet {
     ns: u32, // messages sent
     nr: u32, // messages received
     pn: u32, // previous chain length
-    id="g9c5jx"
 }
 ```
 
@@ -91,7 +90,7 @@ id="r8g3tn"
 
 ### Step 1 — Shared Secret
 
-```text id="e6t9vl"
+```text
 SharedSecret = ECDH(Ephemeral_A, OneTimePreKey_B)
 ```
 
