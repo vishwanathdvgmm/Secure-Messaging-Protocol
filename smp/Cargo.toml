@@ -1,0 +1,55 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/crypto",
+    "crates/identity",
+    "crates/session",
+    "crates/trust",
+    "crates/message",
+    "crates/storage",
+    "crates/registry_client",
+    "crates/relay_client",
+    "bin/client",
+    "bin/relay",
+    "bin/registry",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+repository = "https://github.com/vishwanathdvgmm/Secure-Messaging-Protocol"
+
+[workspace.dependencies]
+# Crypto
+x25519-dalek = { version = "2", features = ["static_secrets"] }
+ed25519-dalek = { version = "2", features = ["rand_core"] }
+chacha20poly1305 = "0.10"
+sha2 = "0.10"
+hkdf = "0.12"
+rand = "0.8"
+rand_core = { version = "0.6", features = ["getrandom"] }
+
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# Async & Networking
+tokio = { version = "1", features = ["full"] }
+tonic = "0.12"
+prost = "0.13"
+tonic-build = "0.12"
+
+# TUI
+ratatui = "0.29"
+crossterm = "0.28"
+
+# Error handling
+thiserror = "2"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = "0.3"
+
+# Testing
+zeroize = "1"

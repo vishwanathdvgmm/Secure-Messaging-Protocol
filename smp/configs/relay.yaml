@@ -1,0 +1,5 @@
+# SMP Relay Server Configuration
+# Populated in future versions
+
+relay:
+  log_level: "info"

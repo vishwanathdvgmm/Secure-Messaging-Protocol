@@ -1,0 +1,22 @@
+[package]
+name = "smp-client"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "SMP TUI client application"
+
+[dependencies]
+smp-crypto = { path = "../../crates/crypto" }
+smp-identity = { path = "../../crates/identity" }
+smp-session = { path = "../../crates/session" }
+smp-trust = { path = "../../crates/trust" }
+smp-message = { path = "../../crates/message" }
+smp-registry-client = { path = "../../crates/registry_client" }
+smp-relay-client = { path = "../../crates/relay_client" }
+tokio = { workspace = true }
+ratatui = { workspace = true }
+crossterm = { workspace = true }
+serde = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }

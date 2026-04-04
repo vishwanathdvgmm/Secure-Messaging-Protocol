@@ -1,0 +1,11 @@
+[package]
+name = "smp-session"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Session management and Double Ratchet for the Secure Messaging Protocol"
+
+[dependencies]
+smp-crypto = { path = "../crypto" }
+serde = { workspace = true }
+thiserror = { workspace = true }

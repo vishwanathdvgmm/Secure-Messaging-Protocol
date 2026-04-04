@@ -1,0 +1,5 @@
+# SMP Client Configuration
+# Populated in future versions
+
+client:
+  log_level: "info"

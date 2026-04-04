@@ -1,0 +1,12 @@
+[package]
+name = "smp-message"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Message format and processing for the Secure Messaging Protocol"
+
+[dependencies]
+smp-crypto = { path = "../crypto" }
+smp-session = { path = "../session" }
+serde = { workspace = true }
+thiserror = { workspace = true }

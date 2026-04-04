@@ -1,0 +1,11 @@
+[package]
+name = "smp-relay-client"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Client-side relay access for the Secure Messaging Protocol"
+
+[dependencies]
+smp-message = { path = "../message" }
+serde = { workspace = true }
+thiserror = { workspace = true }

@@ -1,0 +1,11 @@
+[package]
+name = "smp-registry-client"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Client-side registry access for the Secure Messaging Protocol"
+
+[dependencies]
+smp-identity = { path = "../identity" }
+serde = { workspace = true }
+thiserror = { workspace = true }

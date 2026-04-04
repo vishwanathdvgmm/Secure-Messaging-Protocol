@@ -1,0 +1,10 @@
+[package]
+name = "smp-storage"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Storage layer for the Secure Messaging Protocol"
+
+[dependencies]
+serde = { workspace = true }
+thiserror = { workspace = true }

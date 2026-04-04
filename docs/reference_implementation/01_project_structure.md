@@ -1,12 +1,13 @@
 # Project Structure
 
-This document defines the recommended project structure for implementing SMP.
+This document defines the project structure for implementing SMP.
 
 The structure is designed to:
 
 - Map directly to protocol components
 - Maintain separation of concerns
 - Support scalability and testing
+- Use Rust workspace architecture exclusively
 
 ---
 
@@ -14,102 +15,114 @@ The structure is designed to:
 
 ```text
 smp/
-├── cmd/
-├── internal/
-├── pkg/
+├── Cargo.toml              ← workspace root
+├── crates/
+│   ├── crypto/
+│   ├── identity/
+│   ├── session/
+│   ├── trust/
+│   ├── message/
+│   ├── storage/
+│   ├── registry_client/
+│   └── relay_client/
+├── bin/
+│   ├── client/
+│   ├── relay/
+│   └── registry/
 ├── api/
+│   └── proto/
 ├── configs/
-├── scripts/
 ├── tests/
 └── docs/
-.gitignore
-README.md
 ```
 
 ---
 
 ## 2. Directory Breakdown
 
-### 2.1 cmd/
+### 2.1 crates/ (Library Crates)
 
-Entry points for binaries.
-
-```text
-cmd/
-├── client/
-    ├── main.go
-    ├── tui/
-        ├── screens/
-        ├── controller/
-        ├── components/
-├── relay/
-├── registry/
-```
-
-### Purpose
-
-- `client/` → CLI or app entry
-- `relay/` → relay server
-- `registry/` → identity + trust services
-
-### 2.2 internal/
-
-Core implementation (private modules).
+Core implementation. Each module is its own independent crate.
 
 ```text
-internal/
-├── crypto/
-├── identity/
-├── session/
-├── trust/
-├── message/
-├── transport/
-├── storage/
+crates/
+├── crypto/                 ← Cargo.toml + src/lib.rs
+├── identity/               ← Cargo.toml + src/lib.rs
+├── session/                ← Cargo.toml + src/lib.rs
+├── trust/                  ← Cargo.toml + src/lib.rs
+├── message/                ← Cargo.toml + src/lib.rs
+├── storage/                ← Cargo.toml + src/lib.rs
+├── registry_client/        ← Cargo.toml + src/lib.rs
+└── relay_client/           ← Cargo.toml + src/lib.rs
 ```
 
 ### Modules
 
-| **Module** | **Maps To**           |
-| ---------- | --------------------- |
-| crypto     | Encryption Model      |
-| identity   | Identity Model        |
-| session    | Cryptographic Core    |
-| trust      | Trust Model           |
-| message    | Message Format + Flow |
-| transport  | API + Relay           |
-| storage    | Storage Model         |
+| **Crate**         | **Maps To**           | **Type**    |
+| ----------------- | --------------------- | ----------- |
+| crypto            | Encryption Model      | Library     |
+| identity          | Identity Model        | Library     |
+| session           | Cryptographic Core    | Library     |
+| trust             | Trust Model           | Library     |
+| message           | Message Format + Flow | Library     |
+| storage           | Storage Model         | Library     |
+| registry_client   | Registry API (client) | Library     |
+| relay_client      | Relay API (client)    | Library     |
 
-### 2.3 pkg/
+### Rules
 
-Reusable public libraries (optional).
+- NO monolithic crate
+- NO mixing unrelated modules in one crate
+- Clear boundaries between crates
+- `registry_client` and `relay_client` are client-side ONLY
+- Server logic MUST stay in `bin/relay` and `bin/registry`
+
+### 2.2 bin/ (Executables)
+
+Entry points for binaries.
 
 ```text
-pkg/
-├── smp_protocol/
-├── smp_client/
+bin/
+├── client/                 ← Cargo.toml + src/main.rs
+│   └── src/
+│       ├── main.rs
+│       ├── tui/
+│       │   ├── screens/
+│       │   ├── controller/
+│       │   └── components/
+│       ├── state_provider.rs
+│       └── action_handler.rs
+├── relay/                  ← Cargo.toml + src/main.rs
+│   └── src/
+│       └── main.rs
+└── registry/               ← Cargo.toml + src/main.rs
+    └── src/
+        └── main.rs
 ```
 
 ### Purpose
 
-- Shared logic across services
-- External integrations
+- `client/` → TUI client (ratatui + crossterm)
+- `relay/` → Relay server (tonic gRPC)
+- `registry/` → Identity registry server (tonic gRPC)
 
-### 2.4 api/
+### 2.3 api/
 
 API definitions.
 
 ```text
 api/
-├── rest/
-├── grpc/
+└── proto/
+    ├── relay.proto
+    └── registry.proto
 ```
 
 ### Contents
 
-- REST schemas
-- gRPC proto files
+- gRPC protobuf definitions
+- Compiled via `tonic-build` in build scripts
 
-### 2.5 configs/
+### 2.4 configs/
 
 Configuration files.
 
@@ -117,40 +130,32 @@ Configuration files.
 configs/
 ├── relay.yaml
 ├── registry.yaml
-├── client.yaml
+└── client.yaml
 ```
 
-### 2.6 scripts/
-
-Automation scripts.
-
-```text
-scripts/
-├── build.sh
-├── run.sh
-```
-
-### 2.7 tests/
+### 2.5 tests/
 
 Test suite.
 
 ```text
 tests/
-├── unit/
 ├── integration/
-├── e2e/
+└── e2e/
 ```
 
-### 2.8 docs/
+Note: Unit tests live inside each crate (`#[cfg(test)]` modules).
+
+### 2.6 docs/
 
 ```text
 docs/
-├── api_spec
-├── client_architecture
-├── core
-├── data_paths
-├── operational_infrastructure
-├── reference_implementation
+├── api_spec/
+├── client_architecture/
+├── core/
+├── data_paths/
+├── operational_infrastructure/
+├── reference_implementation/
+└── tui/
 ```
 
 ---
@@ -160,13 +165,14 @@ docs/
 Strict rules:
 
 ```text
-crypto ← no dependencies
-identity ← depends on crypto
-session ← depends on crypto
-trust ← depends on identity
-message ← depends on crypto + session
-transport ← depends on message
-storage ← independent
+crypto            ← no dependencies (leaf crate)
+identity          ← depends on crypto
+session           ← depends on crypto
+trust             ← depends on identity
+message           ← depends on crypto + session
+storage           ← independent (leaf crate)
+relay_client      ← depends on message
+registry_client   ← depends on identity
 ```
 
 ### Key Rule
@@ -179,53 +185,73 @@ No circular dependencies allowed
 
 ## 4. Service Separation
 
-### Client
+### Client (bin/client)
 
-- Uses all modules except relay/storage backend
+- Uses: crypto, identity, session, trust, message, relay_client, registry_client
+- Does NOT contain server-side logic
 
-### Relay
+### Relay (bin/relay)
 
-- Uses transport + storage
-- Does NOT use crypto (except validation)
+- Uses: storage
+- Does NOT use crypto (except signature validation)
+- Server-side relay logic ONLY
 
-### Registry
+### Registry (bin/registry)
 
-- Uses identity + trust modules
+- Uses: identity, trust, storage
 - Does NOT handle messages
+- Server-side registry logic ONLY
 
 ---
 
-## 5. Language Mapping
+## 5. Language & Runtime
 
-### Go
+### Rust (ONLY)
 
-- `internal/` → private packages
-- `cmd/` → main packages
-- `pkg/` → reusable modules
+- `crates/` → library crates (`lib.rs`)
+- `bin/` → binary crates (`main.rs`)
+- Workspace managed via root `Cargo.toml`
 
-### Rust
+### Async Runtime
 
-- `crate` structure per module
-- `bin/` for executables
-- `lib/` for shared logic
+- `tokio` for all async operations
+- All network services MUST be async
+- No blocking calls in async context
+
+### Networking
+
+- `tonic` for gRPC services
+- `serde` for serialization
 
 ---
 
 ## 6. Build Targets
 
-| **Target** | **Description**          |
-| ---------- | ------------------------ |
-| client     | SMP client               |
-| relay      | Relay server             |
-| registry   | Identity + trust service |
+| **Target**        | **Crate Path**    | **Description**          |
+| ----------------- | ----------------- | ------------------------ |
+| smp-client        | bin/client        | TUI client               |
+| smp-relay         | bin/relay         | Relay server             |
+| smp-registry      | bin/registry      | Identity + trust service |
+
+### Build Commands
+
+```text
+cargo build                     ← build all
+cargo build -p smp-client       ← build client only
+cargo build -p smp-relay        ← build relay only
+cargo build -p smp-registry     ← build registry only
+cargo test                      ← test all crates
+cargo test -p smp-crypto        ← test crypto only
+```
 
 ---
 
 ## 7. Scalability Considerations
 
-- Modules must be independently testable
+- Each crate must be independently testable
 - Services must be horizontally scalable
-- Clear API boundaries required
+- Clear API boundaries required between crates
+- No shared mutable state between services
 
 ---
 
@@ -233,9 +259,11 @@ No circular dependencies allowed
 
 The SMP project structure:
 
+- Uses Rust workspace architecture exclusively
 - Maps directly to protocol layers
-- Separates concerns cleanly
-- Supports both Go and Rust implementations
+- Separates concerns cleanly via independent crates
+- Enforces strict dependency ordering
+- Supports independent testing and building per crate
 
 This structure ensures maintainable and scalable development.
 
