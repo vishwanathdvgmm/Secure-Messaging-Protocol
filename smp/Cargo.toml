@@ -33,6 +33,8 @@ rand_core = { version = "0.6", features = ["getrandom"] }
 # Serialization
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
+canonical_json = "0.5"
+hex = "0.4"
 
 # Async & Networking
 tokio = { version = "1", features = ["full"] }

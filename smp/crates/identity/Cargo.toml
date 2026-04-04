@@ -8,4 +8,7 @@ description = "Identity management for the Secure Messaging Protocol"
 [dependencies]
 smp-crypto = { path = "../crypto" }
 serde = { workspace = true }
+serde_json = { workspace = true }
+canonical_json = { workspace = true }
+hex = { workspace = true }
 thiserror = { workspace = true }

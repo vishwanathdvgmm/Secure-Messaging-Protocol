@@ -2,3 +2,4 @@ Enforcement_Rules.md
 Implementation_Plan.md
 target/
 *.lock
+*.log
