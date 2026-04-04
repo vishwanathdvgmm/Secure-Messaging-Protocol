@@ -2,6 +2,9 @@
 
 use crate::error::IdentityError;
 
+/// The fixed system-wide domain
+pub const SYSTEM_DOMAIN: &str = "local";
+
 /// Strong typing for the human-readable username mapping
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Username {
@@ -23,10 +26,11 @@ impl Username {
         let main_part = at_parts[0];
         let domain_part = at_parts[1];
 
-        if domain_part.is_empty() {
-            return Err(IdentityError::InvalidUsername(
-                "domain part cannot be empty".into(),
-            ));
+        if domain_part != SYSTEM_DOMAIN {
+            return Err(IdentityError::InvalidUsername(format!(
+                "domain must be exactly '{}'",
+                SYSTEM_DOMAIN
+            )));
         }
 
         let hash_parts: Vec<&str> = main_part.split('#').collect();
@@ -76,12 +80,12 @@ mod tests {
 
     #[test]
     fn test_valid_username_parse() {
-        let u = Username::parse("alice#7f2a91@domain.com").unwrap();
+        let u = Username::parse("alice#7f2a91@local").unwrap();
         assert_eq!(u.base, "alice");
         assert_eq!(u.discriminator, "7f2a91");
-        assert_eq!(u.domain, "domain.com");
+        assert_eq!(u.domain, "local");
 
-        assert_eq!(u.to_display(), "alice#7f2a91@domain.com");
+        assert_eq!(u.to_display(), "alice#7f2a91@local");
         assert_eq!(u.to_search(), "alice#7f2a91");
     }
 
@@ -92,19 +96,19 @@ mod tests {
 
     #[test]
     fn test_missing_discriminator_sep() {
-        assert!(Username::parse("alice7f2a91@domain.com").is_err());
+        assert!(Username::parse("alice7f2a91@local").is_err());
     }
 
     #[test]
     fn test_wrong_discriminator_length() {
-        assert!(Username::parse("alice#7f2a9@domain.com").is_err()); // 5
-        assert!(Username::parse("alice#7f2a91a@domain.com").is_err()); // 7
+        assert!(Username::parse("alice#7f2a9@local").is_err()); // 5
+        assert!(Username::parse("alice#7f2a91a@local").is_err()); // 7
     }
 
     #[test]
     fn test_empty_parts() {
-        assert!(Username::parse("#7f2a91@domain.com").is_err()); // no base
-        assert!(Username::parse("alice#@domain.com").is_err()); // no discriminator
+        assert!(Username::parse("#7f2a91@local").is_err()); // no base
+        assert!(Username::parse("alice#@local").is_err()); // no discriminator
         assert!(Username::parse("alice#7f2a91@").is_err()); // no domain
     }
 }

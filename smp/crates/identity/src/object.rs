@@ -229,7 +229,7 @@ mod tests {
 
         let id_hash = generate_identity_hash(&ik.public);
         let discriminator = &hex::encode(id_hash)[..crate::hash::DISCRIMINATOR_HEX_LEN];
-        let human_address = format!("alice#{}@domain.com", discriminator);
+        let human_address = format!("alice#{}@local", discriminator);
 
         let signable = SignableIdentityObject {
             human_address,
@@ -264,7 +264,7 @@ mod tests {
         let discriminator = &hex::encode(obj.identity_hash)[..crate::hash::DISCRIMINATOR_HEX_LEN];
 
         // Change the base name but keep discriminator correct (attempts to spoof base name)
-        obj.human_address = format!("mallory#{}@domain.com", discriminator);
+        obj.human_address = format!("mallory#{}@local", discriminator);
 
         // Must fail signature validation because the payload changed
         assert!(matches!(obj.verify(), Err(IdentityError::InvalidSignature)));
